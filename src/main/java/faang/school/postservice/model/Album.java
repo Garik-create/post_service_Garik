@@ -1,12 +1,27 @@
 package faang.school.postservice.model;
 
-import jakarta.persistence.*;
+import faang.school.postservice.enums.VisibilityAlbums;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +50,14 @@ public class Album {
     @ManyToMany
     @JoinTable(name = "post_album", joinColumns = @JoinColumn(name = "album_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> posts;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "visibility", nullable = false)
+    private VisibilityAlbums visibility;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "beholders_ids")
+    private List<Long> beholdersIds;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
