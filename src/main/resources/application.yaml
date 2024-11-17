@@ -27,6 +27,14 @@ spring:
          comment_channel:
            name: comment_channel
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: group_one
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
 server:
   port: 8081
 
@@ -58,3 +66,5 @@ cron-expression: 00 50 17 ? * *
 
 like-service:
   batch-size: 100
+
+comments-amount: 3

@@ -43,6 +43,7 @@ public class LikeServiceImpl implements LikeService {
     private final PostMapper postMapper;
     private final CommentMapper commentMapper;
     private final UserServiceClient userServiceClient;
+    private final KafkaLikeProducer kafkaLikeProducer;
 
     @Value("${like-service.batch-size}")
     private int batchSize;
@@ -93,6 +94,7 @@ public class LikeServiceImpl implements LikeService {
                 like.getId(),
                 postId,
                 userId);
+        kafkaLikeProducer.sendMessage(likeMapper.dtoToKafkaLikeEvent(likeDto));
         return likeMapper.toDto(like);
     }
 
